@@ -8,6 +8,7 @@ class Game:
         self.blocks = [IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()]
         self.current_block = self.get_random_block()
         self.next_block = self.get_random_block()
+        self.held_block = None
         self.game_over = False
         self.score = 0
         self.lines_cleared_total = 0
@@ -54,6 +55,16 @@ class Game:
                 self.lock_block()
                 break
 
+    def hold_block(self):
+        if self.held_block == None:
+            self.held_block = type(self.current_block)()
+            self.current_block = self.next_block
+            self.next_block = self.get_random_block()
+        else:
+            temp = self.held_block
+            self.held_block = type(self.current_block)()
+            self.current_block = temp
+
     def lock_block(self):
         tiles = self.current_block.get_cell_positions()
         for positions in tiles:
@@ -99,8 +110,15 @@ class Game:
         self.current_block.draw(screen, 11, 11)
 
         if self.next_block.id == 3:
-            self.next_block.draw(screen, 250, 290)
-        elif self.next_block.id == 3:
+            self.next_block.draw(screen, 257.5, 290)
+        elif self.next_block.id == 4:
             self.next_block.draw(screen, 255, 280)
         else:
             self.next_block.draw(screen, 270, 270)
+
+        if self.held_block is not None and self.held_block.id == 3:
+            self.held_block.draw(screen, 257.5, 510)
+        elif self.held_block is not None and self.held_block.id == 4:
+            self.held_block.draw(screen, 255, 500)
+        elif self.held_block is not None:
+            self.held_block.draw(screen, 270, 490)
