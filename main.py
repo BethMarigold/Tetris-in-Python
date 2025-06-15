@@ -39,6 +39,14 @@ while True:
                 game.move_down()
             if event.key == pygame.K_UP and game.game_over == False:
                 game.rotate()
+            if event.key == pygame.K_a and game.game_over == False:
+                game.move_left()
+            if event.key == pygame.K_d and game.game_over == False:
+                game.move_right()
+            if event.key == pygame.K_s and game.game_over == False:
+                game.move_down()
+            if event.key == pygame.K_w and game.game_over == False:
+                game.rotate()
             if event.key == pygame.K_SPACE and game.game_over == False:
                 game.hard_drop()
                 game.update_score(0, 4)
