@@ -71,7 +71,7 @@ class Game:
             self.grid.grid[positions.row][positions.column] = self.current_block.id
         lines_cleared = self.grid.clear_full_rows()
         self.lines_cleared_total += lines_cleared
-        self.update_score(0, 1)
+        self.update_score(lines_cleared, 1)
         self.current_block = self.next_block
         self.next_block = self.get_random_block()
         rows_cleared = self.grid.clear_full_rows()
@@ -85,6 +85,7 @@ class Game:
         self.current_block = self.get_random_block()
         self.next_block =  self.get_random_block()
         self.score = 0
+        self.lines_cleared_total = 0
 
     def block_fits(self):
         tiles = self.current_block.get_cell_positions()

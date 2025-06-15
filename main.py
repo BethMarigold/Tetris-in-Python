@@ -73,7 +73,10 @@ while True:
     if game.game_over == True:
         screen.blit(game_over_surface, (320, 137.5, 50, 50))
     else:
-        screen.blit(cleared_value_surface, (397.5, 135, 50, 50))
+        if game.lines_cleared_total < 10:
+            screen.blit(cleared_value_surface, (397.5, 135, 50, 50))
+        elif game.lines_cleared_total >= 10:
+            screen.blit(cleared_value_surface, (390, 135, 50, 50))
     pygame.draw.rect(screen, Colors.light_blue, score_rect, 0, 10)
     screen.blit(score_value_surface, score_value_surface.get_rect(centerx = score_rect.centerx, centery = score_rect.centery))
     
