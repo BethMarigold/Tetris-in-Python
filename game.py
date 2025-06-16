@@ -116,6 +116,11 @@ class Game:
         if self.block_inside() == False or self.block_fits() == False:
             self.current_block.undo_rotation()
 
+    def undo_rotate(self):
+        self.current_block.undo_rotation()
+        if self.block_inside() == False or self.block_fits() == False:
+            self.current_block.rotate()
+
     def block_inside(self):
         tiles = self.current_block.get_cell_positions()
         for tile in tiles:

@@ -5,5 +5,6 @@ Hard Drop is Space
 C is to Hold a block
 Escape is Pause
 R is to Reset
+X is Counter Clockwise Rotation
 After 10 lines cleared, the pieces fall down faster (the game update is 50ms less then it was before)
 All credit goes to Programming With Nick for the game itself
