@@ -94,6 +94,8 @@ while True:
                     paused = True
                 elif paused == True:
                     paused = False
+            if event.key == pygame.K_r and game.game_over == False:
+                game.reset()
         if paused == False and event.type == GAME_UPDATE and game.game_over == False:
             game.move_down()
             if game.lines_cleared_total > 0 and game.lines_cleared_total % 10 == 0:
