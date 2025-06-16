@@ -95,6 +95,7 @@ while True:
                 elif paused == True:
                     paused = False
             if event.key == pygame.K_r and game.game_over == False:
+                game.held_block = None
                 game.reset()
         if paused == False and event.type == GAME_UPDATE and game.game_over == False:
             game.move_down()
