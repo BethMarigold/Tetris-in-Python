@@ -39,3 +39,10 @@ class Block:
         for tile in tiles:
             tile_rect = pygame.Rect(offset_x + tile.column * self.cell_size, offset_y + tile.row * self.cell_size, self.cell_size -1, self.cell_size -1)
             pygame.draw.rect(screen, self.colors[self.id], tile_rect)
+
+    def draw_ghost(self, screen, offset_x, offset_y):
+        ghost_grey = (80, 80, 128)
+        gtiles = self.get_cell_positions()
+        for gtile in gtiles:
+            tile_rect = pygame.Rect(offset_x + gtile.column * self.cell_size, offset_y + gtile.row * self.cell_size, self.cell_size - 1, self.cell_size -1)
+            pygame.draw.rect(screen, ghost_grey, tile_rect)

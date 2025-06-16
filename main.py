@@ -32,8 +32,36 @@ pygame.time.set_timer(GAME_UPDATE, 500)
 
 paused = False
 
+move_delay = 95
+last_move_time = 0
+
 # Loops the game
 while True:
+    current_time = pygame.time.get_ticks()
+    keys = pygame.key.get_pressed()
+    if paused == False and game.game_over == False:
+        if (keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] or keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_s]) and (current_time - last_move_time > move_delay):
+            # Moves the block left one cell
+            if keys[pygame.K_LEFT]:
+                game.move_left()
+            # Moves the block right one cell
+            if keys[pygame.K_RIGHT]:
+                game.move_right()
+            # Brings the block down one cell
+            if keys[pygame.K_DOWN]:
+                game.move_down()
+            last_move_time = current_time
+            # Moves the block left one cell
+            if keys[pygame.K_a]:
+                game.move_left()
+            # Moves the block right one cell
+            if keys[pygame.K_d]:
+                game.move_right()
+            # Brings the block down one cell
+            if keys[pygame.K_s]:
+                game.move_down()
+            last_move_time = current_time
+
     # Loops to detect events
     for event in pygame.event.get():
         # Detect when window is closed
@@ -47,27 +75,9 @@ while True:
             if game.game_over == True:
                 game.game_over = False
                 game.reset()
-            # Moves the block left one cell
-            if paused == False and event.key == pygame.K_LEFT and game.game_over == False:
-                game.move_left()
-            # Moves the block right one cell
-            if paused == False and event.key == pygame.K_RIGHT and game.game_over == False:
-                game.move_right()
-            # Brings the block down one cell
-            if paused == False and event.key == pygame.K_DOWN and game.game_over == False:
-                game.move_down()
             # Rotates the block
             if paused == False and event.key == pygame.K_UP and game.game_over == False:
                 game.rotate()
-                # Moves the block left one cell
-            if paused == False and event.key == pygame.K_a and game.game_over == False:
-                game.move_left()
-            # Moves the block right one cell
-            if paused == False and event.key == pygame.K_d and game.game_over == False:
-                game.move_right()
-            # Brings the block down one cell
-            if paused == False and event.key == pygame.K_s and game.game_over == False:
-                game.move_down()
             # Rotates the block
             if paused == False and event.key == pygame.K_w and game.game_over == False:
                 game.rotate()

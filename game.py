@@ -1,6 +1,8 @@
 from grid import Grid
 from blocks import *
 import random
+import copy
+import pygame
 
 class Game:
     def __init__(self):
@@ -9,6 +11,8 @@ class Game:
         self.current_block = self.get_random_block()
         self.next_block = self.get_random_block()
         self.held_block = None
+        self.lock_delay = 250
+        self.lock_timer = None
         self.game_over = False
         self.score = 0
         self.lines_cleared_total = 0
@@ -45,7 +49,13 @@ class Game:
         self.current_block.move(1,0)
         if self.block_inside() == False or self.block_fits() == False:
             self.current_block.move(-1, 0)
-            self.lock_block()
+            if self.lock_timer is None:
+                self.lock_timer = pygame.time.get_ticks()
+            elif pygame.time.get_ticks() - self.lock_timer >= self.lock_delay:
+                self.lock_block()
+                self.lock_timer = None
+        else:
+            self.lock_timer = None
     
     def hard_drop(self):
         while True:
@@ -93,6 +103,13 @@ class Game:
             if self.grid.is_empty(tile.row, tile.column) == False:
                 return False
         return True
+    
+    def gblock_fits(self, block):
+        gtiles = block.get_cell_positions()
+        for gtile in gtiles:
+            if self.grid.is_empty(gtile.row, gtile.column) == False:
+                return False
+        return True
 
     def rotate(self):
         self.current_block.rotate()
@@ -106,8 +123,17 @@ class Game:
                 return False
         return True
     
+    def gblock_inside(self, block):
+        gtiles = block.get_cell_positions()
+        for gtile in gtiles:
+            if self.grid.is_inside(gtile.row, gtile.column) == False:
+                return False
+        return True
+    
     def draw(self, screen):
         self.grid.draw(screen)
+        ghost_block = self.get_ghost_block()
+        ghost_block.draw_ghost(screen, 11, 11)
         self.current_block.draw(screen, 11, 11)
 
         if self.next_block.id == 3:
@@ -123,3 +149,14 @@ class Game:
             self.held_block.draw(screen, 255, 500)
         elif self.held_block is not None:
             self.held_block.draw(screen, 270, 490)
+        
+    def get_ghost_block(self):
+        ghost_block = copy.deepcopy(self.current_block)
+        ghost_block.row_offset = self.current_block.row_offset
+        ghost_block.column_offset = self.current_block.column_offset
+        while True:
+            ghost_block.move(1, 0)
+            if self.gblock_inside(ghost_block) == False or self.gblock_fits(ghost_block) == False:
+                ghost_block.move(-1, 0)
+                break
+        return ghost_block
