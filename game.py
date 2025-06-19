@@ -114,7 +114,15 @@ class Game:
     def rotate(self):
         self.current_block.rotate()
         if self.block_inside() == False or self.block_fits() == False:
-            self.current_block.undo_rotation()
+            for r_offset, c_offset in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                self.current_block.row_offset += r_offset
+                self.current_block.column_offset += c_offset
+                if self.block_inside() and self.block_fits():
+                    break
+                self.current_block.row_offset -= r_offset
+                self.current_block.column_offset -= c_offset
+            else:
+                self.current_block.undo_rotation()
 
     def undo_rotate(self):
         self.current_block.undo_rotation()
